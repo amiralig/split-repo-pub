@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html ng-app="WordcountApp">
+  <head>
+    <title>Life in Harmony at VCC Asscoiate's Invoice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+      .container {
+        max-width: 1000px;
+      }
+    </style>
+  </head>
+    <body ng-controller="WordcountController">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-5 col-sm-offset-1">
+          <h1>Associate's Name:</h1>
+          <br>
+          <form role="form" ng-submit="getResults()">
+            <div class="form-group">
+              <select name="url" ng-model="url" ng-options="y for (x, y) in names">
+              </select>
+              <!--input type="text" name="url" class="form-control" id="url-box" placeholder="Therapist's name..." style="max-width: 300px;" ng-model="url" required-->
+            </div>
+            <div class="form-group">
+              <select name="invoice_date" ng-model="invoice_date" ng-options="x for (x, y) in dates">
+              </select>
+
+              <!--input type="text" name="url" class="form-control" id="url-box" placeholder="Therapist's name..." style="max-width: 300px;" ng-model="url" required-->
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5 col-sm-offset-1">
+          <h2>Paystubs</h2>
+          <br>
+          <form role="form" ng-submit="persistInvoice()">
+          <div id="results">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Invoice Date</th>
+                  <th>Therapist</th>
+                  <th>Tax</th>
+                  <th>Sub-Total</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>File</th>
+
+
+                </tr>
+              </thead>
+              <tbody>
+
+
+              {% raw %}
+              <tr>
+                <p>{{invoiceUpdate}}</p>
+              </tr>
+              <tr ng-repeat="order in wordcounts">
+                  <td>{{order.invoice_date}}</td>
+                  <td>{{order.name}}</td>
+                  <td><input type="text" ng-model="order.tax" size="5"></td>
+                  <td><input type="text" ng-model="order.subtotal" size="10"></td>
+                  <td><input type="text" ng-model="order.total" size="10"></td>
+                  <td>{{order.status}}</td>
+                  <td><a ng-href="/api/associate-invoice/{{order.id}}"/>{{order.id}}</td>
+                  <td><button type="button" ng-click="createInvoice(order.id)">Recreate Invoice</button></td>
+                </tr>
+              {% endraw %}
+              </tbody>
+            </table>
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5 col-sm-offset-1">
+          <h2>Supervisor Invoices</h2>
+          <br>
+          <div id="results2">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Invoice Date</th>
+                  <th>Therapist</th>
+                  <th>Tax</th>
+                  <th>Sub-Total</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Supervisor Type</th>
+                  <th>File</th>
+
+                </tr>
+              </thead>
+              <tbody>
+              {% raw %}
+                <tr ng-repeat="order in supervisorCounts">
+                  <td>{{order.invoice_date}}</td>
+                  <td>{{order.super_name}}</td>
+                  <td>{{order.tax}}</td>
+                  <td>{{order.subtotal}}</td>
+                  <td>{{order.total}}</td>
+                  <td>{{order.status}}</td>
+                  <td>{{order.supervisor_type}}</td>
+                  <td><a ng-href="/api/supervisor-invoice/{{order.id}}"/>{{order.id}}</td>
+                </tr>
+              {% endraw %}
+              </tbody>
+            </table>
+          </div>
+
+      </div>
+    </div>
+      </div>
+    <br><br>
+    <script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  </body>
+</html>
