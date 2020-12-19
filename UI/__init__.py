@@ -326,6 +326,6 @@ if __name__ == '__main__':
     context = SSL.Context(SSL.SSLv3_METHOD)
     context.options |= SSL.OP_NO_TLSv1
     context.options |= SSL.OP_NO_TLSv1_1
-    context.use_privatekey_file('/etc/letsencrypt/live/accounting.lifeinharmony.ca/cert.pem')
-    context.use_certificate_file('/etc/letsencrypt/live/accounting.lifeinharmony.ca/privkey.pem')
+    context.use_privatekey_file('dummy/cert.pem')
+    context.use_certificate_file('dummy/privkey.pem')
     app.run(host='0.0.0.0', port=443, ssl_context=context)
